@@ -45,10 +45,10 @@ export default class TicketService {
                 const seatReservationService = new SeatReservationService();
                 seatReservationService.reserveSeat(accountId, totalSeats);
             } catch (ex) {
-                console.log(ex.message);
+                //  console.log(ex.message);
             }
         } catch (ex) {
-            console.log(ex.message);
+            // console.log(ex.message);
         }
 
         //return totalAmount;
