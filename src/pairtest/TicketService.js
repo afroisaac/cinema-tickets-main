@@ -59,7 +59,7 @@ export default class TicketService {
     #maxTicketAllowed = 20;
 }
 
-//Sample implementation of the TicketService Class
+// Sample implementation of the TicketService Class. The can be imported in another file and this implementation do in that separate file
 let ticketService = new TicketService();
 const request = [new TicketTypeRequest("ADULT", 2), new TicketTypeRequest("CHILD", 4)];
 ticketService.purchaseTickets(1, ...request);
