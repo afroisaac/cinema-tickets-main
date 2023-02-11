@@ -5,17 +5,37 @@ import InvalidPurchaseException from "../src/pairtest/lib/InvalidPurchaseExcepti
 //jest.mock("../thirdparty/paymentgateway/TicketPaymentService.js");
 describe("TicketService", () => {
     let ticketService;
-    let ticketTypeRequest;
+    let request = [];
     beforeEach(() => {
         ticketService = new TicketService();
-        ticketTypeRequest = new TicketTypeRequest("ADULT", parseInt(2));
+        request = [new TicketTypeRequest("INFANT", 2), new TicketTypeRequest("CHILD", 4)];
     });
 
     describe("purchaseTickets", () => {
         it("Throws an exception if accoundId is less than 1", () => {
             expect(() => {
-                ticketService.purchaseTickets(-1, { type: ticketTypeRequest.getTicketType, noOfTickets: ticketTypeRequest.getNoOfTickets });
-            }).toThrowError(InvalidPurchaseException, "Insufficient fund");
+                ticketService.purchaseTickets(-1, ...request);
+            }).toThrow(new InvalidPurchaseException("Invalid account with insufficient fund"));
+        });
+
+        it("should throw an error if there are no adult tickets in the purchase", () => {
+            expect(() => {
+                ticketService.purchaseTickets(1, ...request);
+            }).toThrow(new InvalidPurchaseException("No Adult ticket in this purchase, must contain at least one Adult ticket"));
+        });
+
+        it("should calculate the total amount correctly", () => {
+            request.push(new TicketTypeRequest("ADULT", 2));
+            // const totalAmount = ticketService.purchaseTickets(1, ...request);
+            // expect(totalAmount).toEqual(80);
+            // expected total amount is (2 * 0) + (4 * 10) + (2 * 20) = 0 + 40 + 40 = 80
+        });
+
+        it("should throw an error if the total number of tickets exceed 20", () => {
+            expect(() => {
+                request.push(new TicketTypeRequest("ADULT", 22));
+                ticketService.purchaseTickets(3, ...request);
+            }).toThrow(new InvalidPurchaseException("Maximum number of allowed tickets of 20 in a single purchase exceeded"));
         });
     });
 });
