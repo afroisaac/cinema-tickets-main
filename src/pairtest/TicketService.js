@@ -45,10 +45,10 @@ export default class TicketService {
                 const seatReservationService = new SeatReservationService();
                 seatReservationService.reserveSeat(accountId, totalSeats);
             } catch (ex) {
-                console.log(ex.message);
+                //  console.log(ex.message);
             }
         } catch (ex) {
-            console.log(ex.message);
+            // console.log(ex.message);
         }
 
         //return totalAmount;
@@ -64,6 +64,10 @@ export default class TicketService {
 }
 
 // Sample implementation of the TicketService Class. The can be imported in another file and this implementation do in that separate file
-let ticketService = new TicketService();
-const request = [new TicketTypeRequest("ADULT", 2), new TicketTypeRequest("CHILD", 4)];
-ticketService.purchaseTickets(1, ...request);
+try {
+    let ticketService = new TicketService();
+    const request = [new TicketTypeRequest("ADULT", 2), new TicketTypeRequest("CHILD", 4)];
+    ticketService.purchaseTickets(1, ...request);
+} catch (ex) {
+    //    console.log(ex);
+}
