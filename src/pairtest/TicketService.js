@@ -58,3 +58,7 @@ export default class TicketService {
     ];
     #maxTicketAllowed = 20;
 }
+
+let ticketService = new TicketService();
+const request = [new TicketTypeRequest("ADULT", 2), new TicketTypeRequest("CHILD", 4)];
+ticketService.purchaseTickets(1, ...request);
