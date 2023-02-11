@@ -22,24 +22,25 @@ export default class TicketService {
 
         let totalAmount = 0;
         let totalNoOfTickets = 0;
-
+        let totalSeats = 0;
         ticketTypeRequests.forEach((request) => {
             let fare = this.#Fares.find((ticket) => ticket.ticketType === request.getTicketType());
             totalNoOfTickets += request.getNoOfTickets();
             totalAmount += fare.price * request.getNoOfTickets();
+            totalSeats += fare.seat * request.getNoOfTickets();
         });
 
         if (parseInt(totalNoOfTickets) > parseInt(this.#maxTicketAllowed)) {
             throw new InvalidPurchaseException("Maximum number of allowed tickets of 20 in a single purchase exceeded");
         }
 
-        //return totalAmount;
+        return totalSeats;
     }
 
     #Fares = [
-        { ticketType: "ADULT", price: 20 },
-        { ticketType: "CHILD", price: 10 },
-        { ticketType: "INFANT", price: 0 },
+        { ticketType: "ADULT", price: 20, seat: 1 },
+        { ticketType: "CHILD", price: 10, seat: 1 },
+        { ticketType: "INFANT", price: 0, seat: 0 },
     ];
     #maxTicketAllowed = 20;
 }
