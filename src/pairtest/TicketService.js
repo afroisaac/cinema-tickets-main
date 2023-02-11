@@ -21,10 +21,12 @@ export default class TicketService {
             throw new InvalidPurchaseException("No Adult ticket in this purchase, must contain at least one Adult ticket");
         }
 
+        // Compute total amount the Tickets cost, total number of tickets in the purchase, total seats to allocate in this booking
+
         let totalAmount = 0;
         let totalNoOfTickets = 0;
         let totalSeats = 0;
-        ticketTypeRequests.forEach((request) => {
+        ticketTypeRequests.map((request) => {
             let fare = this.#Fares.find((ticket) => ticket.ticketType === request.getTicketType());
             totalNoOfTickets += request.getNoOfTickets();
             totalAmount += fare.price * request.getNoOfTickets();
@@ -35,6 +37,7 @@ export default class TicketService {
             throw new InvalidPurchaseException("Maximum number of allowed tickets of 20 in a single purchase exceeded");
         }
 
+        // Make payment and reserve seats
         const ticketPaymentService = new TicketPaymentService();
         try {
             ticketPaymentService.makePayment(accountId, totalAmount);
@@ -47,6 +50,7 @@ export default class TicketService {
         } catch (ex) {
             console.log(ex.message);
         }
+
         //return totalAmount;
         //return totalSeats;
     }
