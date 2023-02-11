@@ -1,6 +1,7 @@
 import TicketTypeRequest from "./lib/TicketTypeRequest.js";
 import InvalidPurchaseException from "./lib/InvalidPurchaseException.js";
 import TicketPaymentService from "../thirdparty/paymentgateway/TicketPaymentService.js";
+import SeatReservationService from "../thirdparty/seatbooking/SeatReservationService.js";
 
 export default class TicketService {
     /**
@@ -34,6 +35,18 @@ export default class TicketService {
             throw new InvalidPurchaseException("Maximum number of allowed tickets of 20 in a single purchase exceeded");
         }
 
+        const ticketPaymentService = new TicketPaymentService();
+        try {
+            ticketPaymentService.makePayment(accountId, totalAmount);
+            try {
+                const seatReservationService = new SeatReservationService();
+                seatReservationService.reserveSeat(accountId, totalSeats);
+            } catch (ex) {
+                console.log(ex.message);
+            }
+        } catch (ex) {
+            console.log(ex.message);
+        }
         //return totalAmount;
         //return totalSeats;
     }
