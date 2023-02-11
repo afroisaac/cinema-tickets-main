@@ -59,6 +59,7 @@ export default class TicketService {
     #maxTicketAllowed = 20;
 }
 
+//Sample implementation of the TicketService Class
 let ticketService = new TicketService();
 const request = [new TicketTypeRequest("ADULT", 2), new TicketTypeRequest("CHILD", 4)];
 ticketService.purchaseTickets(1, ...request);
