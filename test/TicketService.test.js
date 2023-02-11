@@ -1,14 +1,21 @@
 import TicketTypeRequest from "../src/pairtest/lib/TicketTypeRequest";
+import TicketService from "../src/pairtest/TicketService";
 import InvalidPurchaseException from "../src/pairtest/lib/InvalidPurchaseException.js";
 
-test("Expects the request to contain ADULT ticket", () => {
-  const ticketType = [
-    { type: "ADULT", price: 20 },
-    { type: "CHILD", price: 10 },
-    { type: "INFANT", price: 0 },
-  ];
+//jest.mock("../thirdparty/paymentgateway/TicketPaymentService.js");
+describe("TicketService", () => {
+    let ticketService;
+    let ticketTypeRequest;
+    beforeEach(() => {
+        ticketService = new TicketService();
+        ticketTypeRequest = new TicketTypeRequest("ADULT", parseInt(2));
+    });
 
-  const sampleTicketData = [];
-  sampleTicketData.push(new TicketTypeRequest(ticketType[0].type), 2);
-  console.log(sampleTicketData);
+    describe("purchaseTickets", () => {
+        it("Throws an exception if accoundId is less than 1", () => {
+            expect(() => {
+                ticketService.purchaseTickets(-1, { type: ticketTypeRequest.getTicketType, noOfTickets: ticketTypeRequest.getNoOfTickets });
+            }).toThrowError(InvalidPurchaseException, "Insufficient fund");
+        });
+    });
 });
