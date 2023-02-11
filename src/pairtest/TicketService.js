@@ -34,7 +34,8 @@ export default class TicketService {
             throw new InvalidPurchaseException("Maximum number of allowed tickets of 20 in a single purchase exceeded");
         }
 
-        return totalSeats;
+        //return totalAmount;
+        //return totalSeats;
     }
 
     #Fares = [
